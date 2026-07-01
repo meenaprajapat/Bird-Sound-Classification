@@ -9,6 +9,7 @@ import plotly.express as px
 from pathlib import Path
 import pandas as pd
 import os
+import tempfile
 
 # Page configuration
 st.set_page_config(
@@ -382,11 +383,11 @@ st.markdown("""
 def load_model_and_dict():
     """Load the trained model and prediction dictionary"""
     try:
-        model_path = Path("model (2).h5")
+        model_path = Path("bird_model.h5")
         json_path = Path("prediction.json")
-        
+
         if not model_path.exists():
-            st.error("❌ model (2).h5 not found in the current directory!")
+            st.error("❌ bird_model.h5 not found in the current directory!")
             return None, None
         
         if not json_path.exists():
@@ -654,18 +655,19 @@ def main():
         st.markdown("---")
         if st.button("🎯 Classify Bird Species", type="primary"):
             with st.spinner('🔄 Analyzing audio and making predictions...'):
-                # Save uploaded file temporarily
-                temp_audio_path = f"temp_{uploaded_file.name}"
-                with open(temp_audio_path, "wb") as f:
-                    f.write(uploaded_file.getbuffer())
-                
-                # Make prediction
-                predicted_species, confidence, top_5_predictions, audio, sr, mfccs_full = predict_bird_species(
-                    temp_audio_path, model, prediction_dict
-                )
-                
-                # Remove temporary file
-                os.remove(temp_audio_path)
+                # Save uploaded file to a temp path for librosa to read
+                suffix = Path(uploaded_file.name).suffix
+                with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
+                    tmp.write(uploaded_file.getbuffer())
+                    temp_audio_path = tmp.name
+
+                try:
+                    # Make prediction
+                    predicted_species, confidence, top_5_predictions, audio, sr, mfccs_full = predict_bird_species(
+                        temp_audio_path, model, prediction_dict
+                    )
+                finally:
+                    os.remove(temp_audio_path)
                 
                 if predicted_species is not None:
                     # Display main prediction
@@ -929,14 +931,14 @@ def main():
             © 2025 KooKoo AI | Made with ❤️ for bird enthusiasts and researchers
         </p>
         <div style='margin-top: 1.5rem;'>
-            <a href='https://github.com/tarun-02005/koo-koo-ai-new' target='_blank' style='color: #667eea; text-decoration: none; margin: 0 1rem; font-weight: 600;'>
+            <a href='https://github.com/meenaprajapat/Bird-Sound-Classification' target='_blank' style='color: #667eea; text-decoration: none; margin: 0 1rem; font-weight: 600;'>
                 📁 GitHub Repository
             </a>
             <a href='mailto:meenaprajapat98132@gmail.com' style='color: #667eea; text-decoration: none; margin: 0 1rem; font-weight: 600;'>
                 📧 Contact
             </a>
             <a href='https://www.linkedin.com/in/meena-prajapat-a166b4200/' target='_blank' style='color: #667eea; text-decoration: none; margin: 0 1rem; font-weight: 600;'>
-                � LinkedIn
+                🔗 LinkedIn
             </a>
         </div>
         <p style='color: #999; font-size: 0.85rem; margin-top: 1.5rem;'>
