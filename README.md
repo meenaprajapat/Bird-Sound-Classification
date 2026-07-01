@@ -9,7 +9,7 @@ A deep learning web app that identifies bird species from audio recordings. Uplo
 
 ### 🚀 Live Demo
 
-**[👉 Try it live on Streamlit Cloud](https://bird-sound-classification-l5hpur8nzbp9yplhdyznkn.streamlit.app)**
+**[👉 Try it live on Streamlit Cloud](https://kookoo-bird-sound-classification.streamlit.app)**
 
 > No audio handy? Just click **"Try a Sample Bird Call"** inside the app to see it in action instantly.
 
