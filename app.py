@@ -2,6 +2,7 @@ import os
 import tempfile
 from pathlib import Path
 
+import pandas as pd
 import streamlit as st
 
 from src.styles import inject_styles
