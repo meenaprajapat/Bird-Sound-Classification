@@ -375,6 +375,54 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 1px;
     }
+
+    /* Responsive: mobile / small screens */
+    @media (max-width: 768px) {
+        .block-container {
+            padding: 1rem 1rem;
+        }
+        .main-header {
+            padding: 1.5rem 1rem;
+        }
+        .main-header h1 {
+            font-size: 2rem;
+        }
+        .main-header p {
+            font-size: 1rem;
+        }
+        .upload-section {
+            padding: 1.5rem;
+        }
+        .upload-text h2 {
+            font-size: 1.4rem;
+        }
+        .prediction-box {
+            padding: 1.5rem;
+        }
+        .prediction-box h1 {
+            font-size: 1.8rem;
+        }
+        .prediction-box h2 {
+            font-size: 1.3rem;
+        }
+        .metric-card,
+        .feature-card {
+            padding: 1.2rem;
+        }
+        .metric-card h2 {
+            font-size: 1.8rem;
+        }
+        .feature-icon {
+            font-size: 2rem;
+        }
+        .stat-number {
+            font-size: 2rem;
+        }
+        .stButton>button {
+            font-size: 1rem;
+            padding: 0.8rem 1rem;
+        }
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -937,7 +985,7 @@ def main():
             <a href='mailto:meenaprajapat98132@gmail.com' style='color: #667eea; text-decoration: none; margin: 0 1rem; font-weight: 600;'>
                 📧 Contact
             </a>
-            <a href='https://www.linkedin.com/in/meena-prajapat-a166b4200/' target='_blank' style='color: #667eea; text-decoration: none; margin: 0 1rem; font-weight: 600;'>
+            <a href='https://www.linkedin.com/in/meena-a166b4200' target='_blank' style='color: #667eea; text-decoration: none; margin: 0 1rem; font-weight: 600;'>
                 🔗 LinkedIn
             </a>
         </div>

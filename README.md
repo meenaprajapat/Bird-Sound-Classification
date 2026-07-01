@@ -86,5 +86,5 @@ Your app will be live at `https://<your-app-name>.streamlit.app`.
 
 ## Author
 
-**Meena Prajapat**
-[GitHub](https://github.com/meenaprajapat) · [LinkedIn](https://www.linkedin.com/in/meena-prajapat-a166b4200/)
+**Meena**
+[GitHub](https://github.com/meenaprajapat) · [LinkedIn](https://www.linkedin.com/in/meena-a166b4200)
