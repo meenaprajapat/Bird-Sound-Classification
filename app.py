@@ -102,7 +102,7 @@ def main():
         st.markdown("""
         <div class='sb-footer'>
             Made with ❤️ using <strong>TensorFlow &amp; Streamlit</strong><br>
-            © 2025 KooKoo AI
+            © 2026 KooKoo AI
         </div>
         """, unsafe_allow_html=True)
     
@@ -481,7 +481,7 @@ def main():
         <h3 style='color: #667eea; margin-bottom: 1rem;'>🎵 KooKoo AI</h3>
         <p style='color: #666;'>Powered by <strong>TensorFlow 2.x</strong> & <strong>Streamlit</strong></p>
         <p style='color: #999; font-size: 0.9rem; margin-top: 1rem;'>
-            © 2025 KooKoo AI | Made with ❤️ for bird enthusiasts and researchers
+            © 2026 KooKoo AI | Made with ❤️ for bird enthusiasts and researchers
         </p>
         <div style='margin-top: 1.5rem;'>
             <a href='https://github.com/meenaprajapat/Bird-Sound-Classification' target='_blank' style='color: #667eea; text-decoration: none; margin: 0 1rem; font-weight: 600;'>
