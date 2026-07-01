@@ -24,49 +24,192 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
     
+    :root {
+        --grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --grad-soft: linear-gradient(135deg, #7f7fd5 0%, #86a8e7 50%, #91eae4 100%);
+        --glass-bg: rgba(255, 255, 255, 0.55);
+        --glass-border: rgba(255, 255, 255, 0.6);
+    }
+
     * {
         font-family: 'Poppins', sans-serif;
     }
-    
-    .main {
-        padding: 0;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+
+    /* Animated aurora background */
+    .stApp {
+        background: linear-gradient(-45deg, #e0eafc, #cfdef3, #e5d4f1, #d3e9f7);
+        background-size: 400% 400%;
+        animation: gradientShift 18s ease infinite;
     }
-    
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
     .block-container {
-        padding: 2rem 3rem;
+        padding: 3rem 3rem 2rem 3rem;
         max-width: 1400px;
     }
-    
-    /* Header Styling */
+
+    /* Give the top header breathing room so it never gets clipped */
     .main-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 3rem 2rem;
-        border-radius: 20px;
-        text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-        animation: fadeInDown 0.8s ease-out;
-    }
-    
-    .main-header h1 {
-        color: white;
-        font-size: 3.5rem;
-        font-weight: 700;
-        margin: 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-    }
-    
-    .main-header p {
-        color: rgba(255,255,255,0.9);
-        font-size: 1.3rem;
         margin-top: 0.5rem;
     }
-    
+
+    /* Make horizontal card rows equal height */
+    div[data-testid="stHorizontalBlock"] {
+        align-items: stretch;
+    }
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+        display: flex;
+        flex-direction: column;
+    }
+    /* Force every nested wrapper inside a column to fill full height
+       so the card stretches to match the tallest one in the row */
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div,
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] div[data-testid="stMarkdownContainer"],
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] div[data-testid="stMarkdownContainer"] > div,
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] .element-container {
+        height: 100%;
+    }
+    .feature-card,
+    .metric-card {
+        height: 100%;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* "How It Works" step cards (inline-styled) — force equal size */
+    .step-card {
+        height: 100%;
+        min-height: 170px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 1.5rem 1rem;
+        background: var(--glass-bg);
+        backdrop-filter: blur(14px) saturate(150%);
+        -webkit-backdrop-filter: blur(14px) saturate(150%);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        box-shadow: 0 8px 28px rgba(31, 38, 135, 0.14);
+        transition: all 0.3s ease;
+    }
+    .step-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 45px rgba(102, 126, 234, 0.28);
+    }
+
+    /* Shared glass surface */
+    .main-header,
+    .upload-section,
+    .metric-card,
+    .feature-card,
+    .footer,
+    .info-box,
+    .success-box {
+        background: var(--glass-bg);
+        backdrop-filter: blur(18px) saturate(160%);
+        -webkit-backdrop-filter: blur(18px) saturate(160%);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    }
+
+    /* Header Styling */
+    .main-header {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(-45deg, #667eea, #764ba2, #6a3fb5, #5b73e8);
+        background-size: 300% 300%;
+        animation: headerGradient 12s ease infinite, fadeInDown 0.8s ease-out;
+        border: 1px solid rgba(255,255,255,0.25);
+        padding: 3.2rem 2rem;
+        border-radius: 28px;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 18px 50px rgba(102, 126, 234, 0.45);
+    }
+
+    @keyframes headerGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Decorative glowing orbs */
+    .main-header::before,
+    .main-header::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(2px);
+        opacity: 0.35;
+    }
+    .main-header::before {
+        width: 220px; height: 220px;
+        background: radial-gradient(circle, rgba(145,234,228,0.8) 0%, transparent 70%);
+        top: -80px; left: -60px;
+    }
+    .main-header::after {
+        width: 260px; height: 260px;
+        background: radial-gradient(circle, rgba(240,147,251,0.7) 0%, transparent 70%);
+        bottom: -110px; right: -70px;
+    }
+
+    .main-header h1 {
+        position: relative;
+        z-index: 1;
+        color: white;
+        font-size: 3.6rem;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: 0.5px;
+        text-shadow: 0 4px 18px rgba(0,0,0,0.25);
+        animation: floatTitle 4s ease-in-out infinite;
+    }
+
+    @keyframes floatTitle {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+    }
+
+    .main-header .subtitle {
+        position: relative;
+        z-index: 1;
+        color: rgba(255,255,255,0.92);
+        font-size: 1.25rem;
+        font-weight: 300;
+        margin-top: 0.6rem;
+        letter-spacing: 0.3px;
+    }
+
+    .header-badge {
+        position: relative;
+        z-index: 1;
+        display: inline-block;
+        margin-top: 1.2rem;
+        padding: 0.45rem 1.3rem;
+        background: rgba(255,255,255,0.18);
+        border: 1px solid rgba(255,255,255,0.35);
+        border-radius: 50px;
+        color: #ffffff;
+        font-size: 0.9rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
     /* Button Styling */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--grad);
         color: white;
         padding: 1rem 2rem;
         font-size: 1.2rem;
@@ -74,63 +217,65 @@ st.markdown("""
         border-radius: 50px;
         border: none;
         transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
+
     .stButton>button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        transform: translateY(-3px) scale(1.01);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.6);
         background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
     }
-    
+
     /* Upload Section */
     .upload-section {
-        background: white;
         padding: 3rem;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        border-radius: 24px;
         margin: 2rem 0;
-        border: 3px dashed #667eea;
+        border: 2px dashed rgba(102, 126, 234, 0.7);
         transition: all 0.3s ease;
     }
-    
+
     .upload-section:hover {
         border-color: #764ba2;
-        box-shadow: 0 15px 50px rgba(102, 126, 234, 0.2);
+        box-shadow: 0 16px 48px rgba(102, 126, 234, 0.25);
+        transform: translateY(-2px);
     }
-    
+
     .upload-text {
         text-align: center;
         padding: 2rem;
     }
-    
+
     .upload-text h2 {
-        color: #667eea;
+        color: #5a3fa0;
         font-size: 2rem;
         font-weight: 600;
         margin-bottom: 1rem;
     }
-    
+
     /* Prediction Box */
     .prediction-box {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        background: linear-gradient(135deg, rgba(240,147,251,0.92) 0%, rgba(245,87,108,0.92) 100%);
+        backdrop-filter: blur(16px) saturate(150%);
+        -webkit-backdrop-filter: blur(16px) saturate(150%);
+        border: 1px solid rgba(255,255,255,0.3);
         padding: 3rem;
-        border-radius: 25px;
+        border-radius: 28px;
         text-align: center;
         margin: 2rem 0;
-        box-shadow: 0 15px 50px rgba(245, 87, 108, 0.3);
+        box-shadow: 0 18px 55px rgba(245, 87, 108, 0.35);
         animation: slideInUp 0.6s ease-out;
     }
-    
+
     .prediction-box h2 {
         color: white;
         font-size: 1.8rem;
         font-weight: 600;
         margin-bottom: 1rem;
     }
-    
+
     .prediction-box h1 {
         color: white;
         font-size: 3rem;
@@ -138,238 +283,323 @@ st.markdown("""
         margin: 1.5rem 0;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
     }
-    
+
     .prediction-box h3 {
         color: rgba(255,255,255,0.95);
         font-size: 1.5rem;
         font-weight: 500;
     }
-    
+
     /* Metric Cards */
     .metric-card {
-        background: white;
         padding: 2rem;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        border-left: 5px solid #667eea;
+        border-radius: 22px;
+        border-top: 4px solid #667eea;
         transition: all 0.3s ease;
         animation: fadeInUp 0.6s ease-out;
     }
-    
+
     .metric-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        transform: translateY(-6px);
+        box-shadow: 0 18px 45px rgba(102, 126, 234, 0.28);
     }
-    
+
     .metric-card h4 {
-        color: #667eea;
+        color: #5a3fa0;
         font-size: 1rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
         text-transform: uppercase;
         letter-spacing: 1px;
     }
-    
+
     .metric-card h2 {
         font-size: 2.5rem;
         font-weight: 700;
         margin: 0;
     }
-    
+
     /* Info Boxes */
     .info-box {
-        background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+        background: rgba(224, 247, 250, 0.6);
         padding: 1.5rem;
-        border-radius: 15px;
+        border-radius: 16px;
         border-left: 5px solid #00bcd4;
         margin: 1rem 0;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
-    
+
     .info-box h3 {
         color: #00838f;
         font-weight: 600;
         margin-bottom: 0.5rem;
     }
-    
+
     .success-box {
-        background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+        background: rgba(200, 230, 201, 0.6);
         padding: 1.5rem;
-        border-radius: 15px;
+        border-radius: 16px;
         border-left: 5px solid #4caf50;
         margin: 1rem 0;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
-    
+
     /* Sidebar Styling */
-    .css-1d391kg {
-        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-    }
-    
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(180deg, #4c3f8f 0%, #5b4b9e 45%, #3f5aa6 100%);
+        border-right: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.15);
     }
-    
+
+    section[data-testid="stSidebar"] .block-container {
+        padding-top: 1.5rem;
+    }
+
     section[data-testid="stSidebar"] .element-container {
-        color: white;
+        color: rgba(255,255,255,0.95);
     }
-    
+
     section[data-testid="stSidebar"] h1,
     section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3,
-    section[data-testid="stSidebar"] p {
-        color: white !important;
+    section[data-testid="stSidebar"] h3 {
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.3px;
     }
-    
+
+    section[data-testid="stSidebar"] p,
+    section[data-testid="stSidebar"] li {
+        color: rgba(255,255,255,0.88) !important;
+        font-size: 0.92rem;
+        line-height: 1.6;
+    }
+
+    /* Glass info panels inside the sidebar */
+    section[data-testid="stSidebar"] div[style*="rgba(255,255,255,0.1)"] {
+        background: rgba(255,255,255,0.10) !important;
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 14px !important;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Sidebar divider lines */
+    section[data-testid="stSidebar"] hr {
+        border-color: rgba(255,255,255,0.18) !important;
+    }
+
+    /* --- Compact sidebar layout --- */
+    section[data-testid="stSidebar"] .block-container {
+        padding-top: 1.2rem;
+        padding-bottom: 1.2rem;
+    }
+
+    .sb-brand {
+        text-align: center;
+        padding: 0.5rem 0 1rem 0;
+    }
+    .sb-logo {
+        font-size: 3rem;
+        line-height: 1;
+        filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
+    }
+    .sb-brand-name {
+        color: #ffffff;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-top: 0.4rem;
+        letter-spacing: 0.5px;
+    }
+    .sb-brand-tag {
+        color: rgba(255,255,255,0.7);
+        font-size: 0.8rem;
+        font-weight: 400;
+        letter-spacing: 0.5px;
+    }
+
+    .sb-section {
+        margin-bottom: 1.1rem;
+    }
+    .sb-heading {
+        color: #ffffff !important;
+        font-size: 1.05rem !important;
+        font-weight: 600 !important;
+        margin: 0 0 0.5rem 0 !important;
+    }
+    .sb-panel {
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 14px;
+        padding: 0.9rem 1rem;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    .sb-panel p {
+        margin: 0.25rem 0 !important;
+        font-size: 0.88rem !important;
+        color: rgba(255,255,255,0.9) !important;
+    }
+    .sb-panel li {
+        margin: 0.3rem 0;
+        font-size: 0.88rem;
+        color: rgba(255,255,255,0.9);
+    }
+
+    /* Format chips */
+    .sb-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .sb-chip {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 50px;
+        padding: 0.3rem 0.9rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #ffffff;
+        letter-spacing: 0.5px;
+    }
+
+    .sb-footer {
+        text-align: center;
+        color: rgba(255,255,255,0.65);
+        font-size: 0.78rem;
+        line-height: 1.6;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255,255,255,0.15);
+    }
+
     /* Animations */
     @keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
+
     @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
+
     @keyframes slideInUp {
-        from {
-            opacity: 0;
-            transform: translateY(50px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(50px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    
+
     /* File Uploader */
     .stFileUploader {
-        background: white;
-        border-radius: 15px;
+        background: rgba(255,255,255,0.5);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255,255,255,0.5);
+        border-radius: 16px;
         padding: 2rem;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        box-shadow: 0 6px 22px rgba(31, 38, 135, 0.12);
     }
-    
+
     /* Progress Bar */
     .stProgress > div > div {
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        background: var(--grad);
     }
-    
+
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
         gap: 2rem;
     }
-    
+
     .stTabs [data-baseweb="tab"] {
-        background-color: white;
-        border-radius: 10px 10px 0 0;
+        background: rgba(255,255,255,0.5);
+        border-radius: 12px 12px 0 0;
         padding: 1rem 2rem;
         font-weight: 600;
     }
-    
+
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--grad);
         color: white;
     }
-    
+
     /* Footer */
     .footer {
         text-align: center;
         padding: 2rem;
-        background: white;
-        border-radius: 20px;
+        border-radius: 22px;
         margin-top: 3rem;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     }
-    
+
     .footer p {
-        color: #667eea;
+        color: #5a3fa0;
         font-weight: 600;
     }
-    
+
     /* Audio Player */
     .stAudio {
         border-radius: 15px;
         overflow: hidden;
     }
-    
+
     /* Expander */
     .streamlit-expanderHeader {
-        background: white;
-        border-radius: 10px;
+        background: rgba(255,255,255,0.6);
+        border-radius: 12px;
         font-weight: 600;
-        color: #667eea;
+        color: #5a3fa0;
     }
-    
+
     /* Feature Cards */
     .feature-card {
-        background: white;
         padding: 2rem;
-        border-radius: 20px;
+        border-radius: 22px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         transition: all 0.3s ease;
         margin: 1rem 0;
     }
-    
+
     .feature-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 20px 50px rgba(102, 126, 234, 0.2);
+        box-shadow: 0 24px 55px rgba(102, 126, 234, 0.3);
     }
-    
+
     .feature-icon {
         font-size: 3rem;
         margin-bottom: 1rem;
     }
-    
+
     .feature-title {
-        color: #667eea;
+        color: #5a3fa0;
         font-size: 1.3rem;
         font-weight: 600;
         margin-bottom: 0.5rem;
     }
-    
+
     .feature-desc {
-        color: #666;
+        color: #555;
         font-size: 1rem;
     }
-    
+
     /* Stats Display */
     .stats-container {
         display: flex;
         justify-content: space-around;
         margin: 2rem 0;
     }
-    
+
     .stat-item {
         text-align: center;
         padding: 1.5rem;
     }
-    
+
     .stat-number {
         font-size: 3rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: var(--grad);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
-    
+
     .stat-label {
-        color: #666;
+        color: #555;
         font-size: 1rem;
         font-weight: 500;
         text-transform: uppercase;
@@ -387,8 +617,12 @@ st.markdown("""
         .main-header h1 {
             font-size: 2rem;
         }
-        .main-header p {
-            font-size: 1rem;
+        .main-header .subtitle {
+            font-size: 0.95rem;
+        }
+        .header-badge {
+            font-size: 0.72rem;
+            padding: 0.4rem 0.9rem;
         }
         .upload-section {
             padding: 1.5rem;
@@ -576,31 +810,27 @@ def main():
     st.markdown("""
     <div class='main-header'>
         <h1>🎵 KooKoo AI 🐦</h1>
-        <p>Advanced Deep Learning System for Identifying 114 Bird Species</p>
+        <p class='subtitle'>Advanced Deep Learning System for Identifying Bird Species by Their Calls</p>
+        <span class='header-badge'>🧠 CNN Model &nbsp;•&nbsp; 🎼 40 MFCC Features &nbsp;•&nbsp; 🐦 114 Species</span>
     </div>
     """, unsafe_allow_html=True)
     
     # Sidebar with Professional Design
     with st.sidebar:
-        st.markdown("<br>", unsafe_allow_html=True)
-        
-        # Logo/Icon
-        col1, col2, col3 = st.columns([1,2,1])
-        with col2:
-            st.markdown("""
-            <div style='text-align: center; padding: 1rem;'>
-                <div style='font-size: 5rem;'>🐦</div>
-                <h2 style='color: white; margin-top: 0.5rem;'>KooKoo AI</h2>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("<hr style='border-color: rgba(255,255,255,0.3);'>", unsafe_allow_html=True)
-        
+        # Brand / Logo
+        st.markdown("""
+        <div class='sb-brand'>
+            <div class='sb-logo'>🐦</div>
+            <div class='sb-brand-name'>KooKoo AI</div>
+            <div class='sb-brand-tag'>Bird Sound Classifier</div>
+        </div>
+        """, unsafe_allow_html=True)
+
         # About Section
         st.markdown("""
-        <div style='color: white; padding: 1rem;'>
-            <h3 style='color: white;'>📚 About the Model</h3>
-            <div style='background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin: 1rem 0;'>
+        <div class='sb-section'>
+            <h3 class='sb-heading'>📚 About the Model</h3>
+            <div class='sb-panel'>
                 <p><strong>🧠 Architecture:</strong> Optimized CNN</p>
                 <p><strong>🎼 Features:</strong> 40 MFCC Coefficients</p>
                 <p><strong>🐦 Species:</strong> 114 Bird Types</p>
@@ -609,15 +839,13 @@ def main():
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown("<hr style='border-color: rgba(255,255,255,0.3);'>", unsafe_allow_html=True)
-        
+
         # How to Use
         st.markdown("""
-        <div style='color: white; padding: 1rem;'>
-            <h3 style='color: white;'>🎯 Quick Guide</h3>
-            <div style='background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin: 1rem 0;'>
-                <ol style='padding-left: 1.2rem;'>
+        <div class='sb-section'>
+            <h3 class='sb-heading'>🎯 Quick Guide</h3>
+            <div class='sb-panel'>
+                <ol style='padding-left: 1.1rem; margin: 0;'>
                     <li>📤 Upload bird sound file</li>
                     <li>🎧 Listen to preview</li>
                     <li>🚀 Click "Classify Species"</li>
@@ -627,30 +855,25 @@ def main():
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown("<hr style='border-color: rgba(255,255,255,0.3);'>", unsafe_allow_html=True)
-        
+
         # Supported Formats
         st.markdown("""
-        <div style='color: white; padding: 1rem;'>
-            <h3 style='color: white;'>📁 File Formats</h3>
-            <div style='background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin: 1rem 0;'>
-                <p>✅ MP3 - Most common</p>
-                <p>✅ WAV - Uncompressed</p>
-                <p>✅ OGG - Open format</p>
-                <p>✅ FLAC - Lossless</p>
+        <div class='sb-section'>
+            <h3 class='sb-heading'>📁 Supported Formats</h3>
+            <div class='sb-chips'>
+                <span class='sb-chip'>MP3</span>
+                <span class='sb-chip'>WAV</span>
+                <span class='sb-chip'>OGG</span>
+                <span class='sb-chip'>FLAC</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        
+
         # Footer in Sidebar
         st.markdown("""
-        <div style='text-align: center; color: rgba(255,255,255,0.7); font-size: 0.85rem; padding: 1rem;'>
-            <p>Made with ❤️ using</p>
-            <p><strong>TensorFlow & Streamlit</strong></p>
-            <p style='margin-top: 1rem;'>© 2025 KooKoo AI</p>
+        <div class='sb-footer'>
+            Made with ❤️ using <strong>TensorFlow &amp; Streamlit</strong><br>
+            © 2025 KooKoo AI
         </div>
         """, unsafe_allow_html=True)
     
@@ -926,46 +1149,46 @@ def main():
         
         with process_cols[0]:
             st.markdown("""
-            <div style='text-align: center; padding: 1.5rem; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);'>
-                <div style='font-size: 2.5rem; color: #667eea;'>📤</div>
-                <h4 style='color: #667eea; margin-top: 1rem;'>1. Upload</h4>
-                <p style='color: #666; font-size: 0.9rem;'>Upload your bird sound file</p>
+            <div class='step-card'>
+                <div style='font-size: 2.5rem;'>📤</div>
+                <h4 style='color: #5a3fa0; margin-top: 0.8rem; margin-bottom: 0.4rem;'>1. Upload</h4>
+                <p style='color: #555; font-size: 0.9rem; margin: 0;'>Upload your bird sound file</p>
             </div>
             """, unsafe_allow_html=True)
-        
+
         with process_cols[1]:
             st.markdown("""
-            <div style='text-align: center; padding: 1.5rem; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);'>
-                <div style='font-size: 2.5rem; color: #764ba2;'>🎼</div>
-                <h4 style='color: #764ba2; margin-top: 1rem;'>2. Extract</h4>
-                <p style='color: #666; font-size: 0.9rem;'>Extract MFCC features</p>
+            <div class='step-card'>
+                <div style='font-size: 2.5rem;'>🎼</div>
+                <h4 style='color: #5a3fa0; margin-top: 0.8rem; margin-bottom: 0.4rem;'>2. Extract</h4>
+                <p style='color: #555; font-size: 0.9rem; margin: 0;'>Extract MFCC features</p>
             </div>
             """, unsafe_allow_html=True)
-        
+
         with process_cols[2]:
             st.markdown("""
-            <div style='text-align: center; padding: 1.5rem; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);'>
-                <div style='font-size: 2.5rem; color: #667eea;'>🧠</div>
-                <h4 style='color: #667eea; margin-top: 1rem;'>3. Analyze</h4>
-                <p style='color: #666; font-size: 0.9rem;'>CNN processes features</p>
+            <div class='step-card'>
+                <div style='font-size: 2.5rem;'>🧠</div>
+                <h4 style='color: #5a3fa0; margin-top: 0.8rem; margin-bottom: 0.4rem;'>3. Analyze</h4>
+                <p style='color: #555; font-size: 0.9rem; margin: 0;'>CNN processes features</p>
             </div>
             """, unsafe_allow_html=True)
-        
+
         with process_cols[3]:
             st.markdown("""
-            <div style='text-align: center; padding: 1.5rem; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);'>
-                <div style='font-size: 2.5rem; color: #764ba2;'>🎯</div>
-                <h4 style='color: #764ba2; margin-top: 1rem;'>4. Predict</h4>
-                <p style='color: #666; font-size: 0.9rem;'>Identify bird species</p>
+            <div class='step-card'>
+                <div style='font-size: 2.5rem;'>🎯</div>
+                <h4 style='color: #5a3fa0; margin-top: 0.8rem; margin-bottom: 0.4rem;'>4. Predict</h4>
+                <p style='color: #555; font-size: 0.9rem; margin: 0;'>Identify bird species</p>
             </div>
             """, unsafe_allow_html=True)
-        
+
         with process_cols[4]:
             st.markdown("""
-            <div style='text-align: center; padding: 1.5rem; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08);'>
-                <div style='font-size: 2.5rem; color: #667eea;'>📊</div>
-                <h4 style='color: #667eea; margin-top: 1rem;'>5. Results</h4>
-                <p style='color: #666; font-size: 0.9rem;'>View detailed insights</p>
+            <div class='step-card'>
+                <div style='font-size: 2.5rem;'>📊</div>
+                <h4 style='color: #5a3fa0; margin-top: 0.8rem; margin-bottom: 0.4rem;'>5. Results</h4>
+                <p style='color: #555; font-size: 0.9rem; margin: 0;'>View detailed insights</p>
             </div>
             """, unsafe_allow_html=True)
 
