@@ -1,8 +1,17 @@
 # 🐦 KooKoo AI — Bird Sound Classification
 
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-FF6F00?logo=tensorflow&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.38-FF4B4B?logo=streamlit&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 A deep learning web app that identifies bird species from audio recordings. Upload a bird call (MP3, WAV, OGG, or FLAC), and a trained CNN model predicts the species from 114 possible classes, along with confidence scores, top-5 predictions, and audio visualizations (waveform + MFCC heatmap).
 
-**Live demo:** _add your deployed Streamlit Cloud URL here after deploying_
+### 🚀 Live Demo
+
+**[👉 Try it live on Streamlit Cloud](https://bird-sound-classification-l5hpur8nzbp9yplhdyznkn.streamlit.app)**
+
+> No audio handy? Just click **"Try a Sample Bird Call"** inside the app to see it in action instantly.
 
 ![Main Interface](screenshots/main_interface.png)
 
@@ -11,8 +20,11 @@ A deep learning web app that identifies bird species from audio recordings. Uplo
 - 🎯 Bird species classification across 114 species
 - 📊 Top-5 predictions with confidence scores
 - 🌊 Waveform and MFCC feature visualizations
+- 🎵 One-click sample audio to demo the app instantly
+- 🛡️ Graceful handling of silent / too-short / invalid audio
 - 💾 Downloadable prediction results (CSV)
 - 🎧 In-browser audio playback
+- 📱 Responsive, glassmorphism UI
 
 ## How It Works
 
@@ -57,13 +69,31 @@ The app will open at `http://localhost:8501`.
 ## Project Structure
 
 ```
-├── app.py                 # Streamlit application
+├── app.py                  # Streamlit UI (thin — delegates to src/ modules)
+├── src/
+│   ├── model_loader.py     # Loads the CNN model + label mapping
+│   ├── audio_processing.py # Audio loading, validation, MFCC extraction
+│   ├── predictor.py        # Runs inference, formats top-K results
+│   ├── visualizations.py   # Plotly waveform / MFCC / prediction charts
+│   └── styles.py           # Custom glassmorphism CSS theme
+├── tests/
+│   └── test_pipeline.py    # Unit tests for the inference pipeline (pytest)
 ├── bird_model.h5           # Trained CNN model
 ├── prediction.json         # Class index -> species name mapping
-├── requirements.txt        # Python dependencies
-├── packages.txt            # System packages needed on Streamlit Cloud (libsndfile)
+├── sample_bird_call.ogg    # Bundled demo audio for the "Try a Sample" button
+├── requirements.txt        # Python dependencies (pinned)
+├── requirements-dev.txt    # Dev/test dependencies (pytest)
+├── packages.txt            # System packages for Streamlit Cloud (libsndfile)
+├── runtime.txt             # Pins Python 3.11 on Streamlit Cloud
 ├── .streamlit/config.toml  # Streamlit theme & server config
-└── screenshots/             # App screenshots for documentation
+└── screenshots/            # App screenshots for documentation
+```
+
+## Running Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest -q
 ```
 
 ## Deployment (Streamlit Community Cloud — Free)
@@ -83,6 +113,9 @@ Your app will be live at `https://<your-app-name>.streamlit.app`.
 - Input: 40 MFCC coefficients (mean-aggregated across time), reshaped to `(1, 40, 1)`.
 - Output: 114-way softmax over bird species.
 - Reported test accuracy: ~65%.
+- The model was trained on a specific set of 114 species (mostly Tinamous, Guans,
+  Megapodes, and other ground/ratite birds). Recordings of species outside this set
+  will naturally produce low-confidence predictions — the app flags these clearly.
 
 ## Author
 
